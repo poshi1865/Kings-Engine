@@ -20,6 +20,10 @@ public class Game extends JPanel {
         this.HEIGHT = HEIGHT;
         this.title = title;
         init();
+
+        this.setFocusable(true);
+        this.requestFocus();
+        addKeyListener(key);
     }
 
     //Initialize the Game Panel
@@ -28,9 +32,6 @@ public class Game extends JPanel {
         setPreferredSize(screenDimension);
 
         key = new Keyboard();
-        setFocusable(true);
-        requestFocus();
-        addKeyListener(key);
 
         pad = new Paddle(10, 10);
     }
@@ -73,7 +74,7 @@ public class Game extends JPanel {
 
             if (System.currentTimeMillis() - timer > 1000) {
                 timer += 1000;
-                System.out.println(updates + " UPS, " + frames + " FPS");
+                //System.out.println(updates + " UPS, " + frames + " FPS");
                 updates = 0;
                 frames = 0;
             }
@@ -81,7 +82,22 @@ public class Game extends JPanel {
     }
 
     private void update() {
-        if (key.up) pad.y--;
+        if (key.up) {
+            pad.y--;
+            System.out.println("UP");
+        }
+        if (key.down) {
+            pad.y++;
+            System.out.println("DOWN");
+        }
+        if (key.left) {
+            pad.x--;
+            System.out.println("LEFT");
+        }
+        if (key.right) {
+            pad.x++;
+            System.out.println("RIGHT");
+        }
     }
 
     private void render() {
