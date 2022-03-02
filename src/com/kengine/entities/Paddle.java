@@ -1,4 +1,4 @@
-package com.kengine.main;
+package com.kengine.entities;
 
 import java.awt.Color;
 

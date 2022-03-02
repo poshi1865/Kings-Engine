@@ -1,5 +1,8 @@
 package com.kengine.main;
 
+import com.kengine.entities.Beam;
+import com.kengine.entities.Paddle;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -12,8 +15,8 @@ public class Game extends JPanel {
     private boolean running = true;
 
     private Keyboard key;
-
     private Paddle pad;
+    private Beam beam;
 
     public Game(String title, int WIDTH, int HEIGHT) {
         this.WIDTH = WIDTH;
@@ -34,8 +37,13 @@ public class Game extends JPanel {
         key = new Keyboard();
 
         pad = new Paddle(10, 10);
+        beam = new Beam(pad.x + 10,pad.y + 10,10, 5, true,false, 5 );
+
     }
 
+    /*
+    Does everything that has to do with rendering on the screen
+     */
     @Override
     public void paintComponent(Graphics g) {
         Graphics2D graphics = (Graphics2D) g;
@@ -46,9 +54,13 @@ public class Game extends JPanel {
         graphics.setColor(Color.white);
         graphics.fillRect(0, 0, WIDTH, HEIGHT);
 
+
         //Draw
         graphics.setColor(Color.BLACK);
         graphics.fillRect(pad.x, pad.y, pad.width, pad.height);
+        //Draw Beam
+        graphics.setColor(Color.GREEN);
+        graphics.fillOval(beam.x, beam.y, beam.width, beam.height);
 
         graphics.dispose();
     }
@@ -82,6 +94,7 @@ public class Game extends JPanel {
     }
 
     private void update() {
+        beam.x+= beam.speed;
         if (key.up) {
             pad.y--;
             System.out.println("UP");
