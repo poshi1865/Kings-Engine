@@ -11,7 +11,6 @@ public class Game extends JPanel {
     private int WIDTH;
     private int HEIGHT;
     private String title;
-    private int i;
 
     private boolean running = true;
 
