@@ -11,7 +11,6 @@ public class Game extends JPanel {
     private int WIDTH;
     private int HEIGHT;
     private String title;
-    private int direction = 1;
     private int i;
 
     private boolean running = true;
@@ -42,7 +41,7 @@ public class Game extends JPanel {
 
         pad1 = new Paddle(200, 10);
         pad2 = new Paddle(800, 10);
-        beam = new Beam(pad1.x + 10,pad1.y + 10,10, 5, true,false, 5 );
+        beam = new Beam(pad1.x + 10,pad1.y + 10,10, 5, 1, 20 );
 
     }
 
@@ -103,20 +102,16 @@ public class Game extends JPanel {
     }
 
     private void update() {
-
-        for (i=0; i < pad2.x - pad1.x; i++);
+        if (beam.x == pad2.x-10 && beam.direction == 1)
         {
-            if (beam.x == pad2.x-10 && direction == 1)
-            {
-                direction = -1;
-            }
-            else if (beam.x == pad1.x-10 && direction == -1)
-            {
-                direction = 1;
-            }
-
-            beam.x = beam.x + direction*beam.speed;
+            beam.direction = -1;
         }
+        else if (beam.x == pad1.x-10 && beam.direction == -1)
+        {
+            beam.direction = 1;
+        }
+
+        beam.x = beam.x + beam.direction * beam.speed;
 
 
         if (key.up) {
