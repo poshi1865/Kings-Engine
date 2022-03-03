@@ -15,8 +15,10 @@ public class Game extends JPanel {
     private boolean running = true;
 
     private Keyboard key;
-    private Paddle pad;
+    private Paddle pad1;
+    private Paddle pad2;
     private Beam beam;
+
 
     public Game(String title, int WIDTH, int HEIGHT) {
         this.WIDTH = WIDTH;
@@ -36,8 +38,9 @@ public class Game extends JPanel {
 
         key = new Keyboard();
 
-        pad = new Paddle(10, 10);
-        beam = new Beam(pad.x + 10,pad.y + 10,10, 5, true,false, 5 );
+        pad1 = new Paddle(200, 10);
+        pad2 = new Paddle(800, 10);
+        beam = new Beam(pad1.x + 10,pad1.y + 10,10, 5, 1, 20 );
 
     }
 
@@ -55,9 +58,13 @@ public class Game extends JPanel {
         graphics.fillRect(0, 0, WIDTH, HEIGHT);
 
 
-        //Draw
+        //Draw Paddle 1
         graphics.setColor(Color.BLACK);
-        graphics.fillRect(pad.x, pad.y, pad.width, pad.height);
+        graphics.fillRect(pad1.x, pad1.y, pad1.width, pad1.height);
+        //Draw Paddle 2
+        graphics.setColor(Color.BLACK);
+        graphics.fillRect(pad2.x, pad2.y, pad2.width, pad2.height);
+
         //Draw Beam
         graphics.setColor(Color.GREEN);
         graphics.fillOval(beam.x, beam.y, beam.width, beam.height);
@@ -94,21 +101,32 @@ public class Game extends JPanel {
     }
 
     private void update() {
-        beam.x+= beam.speed;
+        if (beam.x == pad2.x-10 && beam.direction == 1)
+        {
+            beam.direction = -1;
+        }
+        else if (beam.x == pad1.x-10 && beam.direction == -1)
+        {
+            beam.direction = 1;
+        }
+
+        beam.x = beam.x + beam.direction * beam.speed;
+
+
         if (key.up) {
-            pad.y--;
+            pad1.y--;
             System.out.println("UP");
         }
         if (key.down) {
-            pad.y++;
+            pad1.y++;
             System.out.println("DOWN");
         }
         if (key.left) {
-            pad.x--;
+            pad1.x--;
             System.out.println("LEFT");
         }
         if (key.right) {
-            pad.x++;
+            pad1.x++;
             System.out.println("RIGHT");
         }
     }
