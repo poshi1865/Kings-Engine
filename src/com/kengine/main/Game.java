@@ -40,7 +40,7 @@ public class Game extends JPanel {
 
         pad1 = new Paddle(200, 10);
         pad2 = new Paddle(800, 10);
-        beam = new Beam(pad1.x + 10,pad1.y + 10,10, 5, 1, 20 );
+        beam = new Beam(pad1.x + 10,pad1.y + 10,50, 10, 1, 10 );
 
     }
 
