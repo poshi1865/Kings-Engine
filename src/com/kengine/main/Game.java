@@ -156,6 +156,7 @@ public class Game extends JPanel {
     }
 
     public static void main(String[] args) {
+        System.setProperty("sun.java2d.opengl", "true");
         Game game = new Game("Kings-Engine", 1080, 720);
 
         //Making the JFrame
