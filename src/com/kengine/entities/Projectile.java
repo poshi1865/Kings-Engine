@@ -6,14 +6,7 @@ public class Projectile {
     public int y;
     public int width;
     public int height;
-
     public int direction;
-
-    public int chargeTime;
-
     public int speed;
-
-    public int damage;
-
 }
 
