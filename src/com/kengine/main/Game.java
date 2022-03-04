@@ -5,6 +5,8 @@ import com.kengine.entities.Paddle;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
 public class Game extends JPanel {
 
@@ -14,21 +16,26 @@ public class Game extends JPanel {
 
     private boolean running = true;
 
-    private Keyboard key;
     private Paddle pad1;
     private Paddle pad2;
     private Beam beam;
 
+    private Keyboard key;
+
+    //Key Bindings
+    private static final String UP = "Up";
+    private Action up = new AbstractAction(UP) {
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            System.out.println(UP);
+        }
+    };
 
     public Game(String title, int WIDTH, int HEIGHT) {
         this.WIDTH = WIDTH;
         this.HEIGHT = HEIGHT;
         this.title = title;
         init();
-
-        this.setFocusable(true);
-        this.requestFocus();
-        addKeyListener(key);
     }
 
     //Initialize the Game Panel
@@ -37,11 +44,21 @@ public class Game extends JPanel {
         setPreferredSize(screenDimension);
 
         key = new Keyboard();
+        key.update();
+
+        setFocusable(true);
+        requestFocusInWindow();
+        addKeyListener(key);
 
         pad1 = new Paddle(200, 10);
         pad2 = new Paddle(800, 10);
-        beam = new Beam(pad1.x + 10,pad1.y + 10,10, 5, 1, 20 );
+        beam = new Beam(pad1.x + 10, pad1.y + 10, 20, 20, 1, 5);
 
+    }
+
+    private void initKeymaps() {
+        this.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), UP);
+        this.getActionMap().put(UP, up);
     }
 
     /*
@@ -101,34 +118,28 @@ public class Game extends JPanel {
     }
 
     private void update() {
-        if (beam.x == pad2.x-10 && beam.direction == 1)
-        {
+
+        if (beam.x == pad2.x - beam.width && beam.direction == 1) {
             beam.direction = -1;
-        }
-        else if (beam.x == pad1.x-10 && beam.direction == -1)
-        {
+        } else if (beam.x == pad1.x + beam.width - 5 && beam.direction == -1) {
             beam.direction = 1;
         }
 
+        if(key.down) {
+            pad1.y += pad1.speed;
+        }
+        if(key.up) {
+            pad1.y -= pad1.speed;
+        }
+        if(key.right) {
+            pad1.x += pad1.speed;
+        }
+        if(key.left) {
+            pad1.x -= pad1.speed;
+        }
+        key.update();
+
         beam.x = beam.x + beam.direction * beam.speed;
-
-
-        if (key.up) {
-            pad1.y--;
-            System.out.println("UP");
-        }
-        if (key.down) {
-            pad1.y++;
-            System.out.println("DOWN");
-        }
-        if (key.left) {
-            pad1.x--;
-            System.out.println("LEFT");
-        }
-        if (key.right) {
-            pad1.x++;
-            System.out.println("RIGHT");
-        }
     }
 
     private void render() {
