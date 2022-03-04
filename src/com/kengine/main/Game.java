@@ -52,7 +52,7 @@ public class Game extends JPanel {
 
         pad1 = new Paddle(200, 10);
         pad2 = new Paddle(800, 10);
-        beam = new Beam(pad1.x + 10, pad1.y + 10, 20, 20, 1, 5);
+        beam = new Beam(pad1.x + 10, pad1.y + 10, 20, 20, 1, 1, 5);
 
     }
 
@@ -67,8 +67,9 @@ public class Game extends JPanel {
     @Override
     public void paintComponent(Graphics g) {
         Graphics2D graphics = (Graphics2D) g;
-        super.paintComponent(graphics);
+        //*****************************TURN ON ANTIALIASING******************************************
         graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        //*******************************************************************************************
 
         //clear screen
         graphics.setColor(Color.white);
@@ -119,10 +120,32 @@ public class Game extends JPanel {
 
     private void update() {
 
-        if (beam.x == pad2.x - beam.width && beam.direction == 1) {
-            beam.direction = -1;
-        } else if (beam.x == pad1.x + beam.width - 5 && beam.direction == -1) {
-            beam.direction = 1;
+        /*beam collisions*/
+
+        //Collision with paddles
+        if (beam.x == pad2.x - beam.width && beam.directionX == 1) {
+            if (beam.y > pad2.y && beam.y < pad2.y + pad2.height) {
+                beam.directionX = -1;
+            }
+        }
+        else if (beam.x == pad1.x + beam.width && beam.directionX == -1) {
+            if (beam.y > pad1.y && beam.y < pad1.y + pad1.height) {
+                beam.directionX = 1;
+            }
+        }
+
+        //Collision with walls
+        if (beam.x == WIDTH) {
+            beam.directionX = -1;
+        }
+        if (beam.x == 0) {
+            beam.directionX = 1;
+        }
+        if (beam.y == 0) {
+            beam.directionY = 1;
+        }
+        if (beam.y == HEIGHT) {
+            beam.directionY = -1;
         }
 
         if(key.down) {
@@ -131,15 +154,16 @@ public class Game extends JPanel {
         if(key.up) {
             pad1.y -= pad1.speed;
         }
-        if(key.right) {
-            pad1.x += pad1.speed;
-        }
-        if(key.left) {
-            pad1.x -= pad1.speed;
-        }
+        //if(key.right) {
+        //    pad1.x += pad1.speed;
+        //}
+        //if(key.left) {
+        //    pad1.x -= pad1.speed;
+        //}
         key.update();
 
-        beam.x = beam.x + beam.direction * beam.speed;
+        beam.x = beam.x + beam.directionX * beam.speed;
+        beam.y = beam.y + beam.directionY * beam.speed;
     }
 
     private void render() {
