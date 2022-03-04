@@ -10,8 +10,8 @@ import java.awt.event.KeyEvent;
 
 public class Game extends JPanel {
 
-    private int WIDTH;
-    private int HEIGHT;
+    public static int WIDTH;
+    public static int HEIGHT;
     private String title;
 
     private boolean running = true;
@@ -61,23 +61,11 @@ public class Game extends JPanel {
         graphics.setColor(Color.white);
         graphics.fillRect(0, 0, WIDTH, HEIGHT);
 
-        //Draw Player1 Line
-        graphics.setColor(Color.RED);
-        graphics.fillRect(pad1.x, 0, 4, HEIGHT);
-        //Draw Player2 Line
-        graphics.setColor(Color.RED);
-        graphics.fillRect(pad2.x, 0, 4, HEIGHT);
+        pad1.render(graphics);
+        pad2.render(graphics);
 
-        //Draw Paddle 1
-        graphics.setColor(Color.BLACK);
-        graphics.fillRect(pad1.x, pad1.y, pad1.width, pad1.height);
-        //Draw Paddle 2
-        graphics.setColor(Color.BLACK);
-        graphics.fillRect(pad2.x, pad2.y, pad2.width, pad2.height);
-
-        //Draw Beam
-        graphics.setColor(Color.GREEN);
-        graphics.fillOval(beam.x, beam.y, beam.width, beam.height);
+        //Beam rendering stuff
+        beam.render(graphics);
 
         graphics.dispose();
     }
@@ -171,6 +159,7 @@ public class Game extends JPanel {
     }
 
     public static void main(String[] args) {
+        System.setProperty("sun.java2d.opengl", "true");
         Game game = new Game("Kings-Engine", 1080, 720);
 
         //Making the JFrame

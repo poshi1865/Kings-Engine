@@ -1,5 +1,7 @@
 package com.kengine.entities;
 
+import java.awt.*;
+
 public class Beam extends Projectile{
 
     public Beam(int x, int y, int width, int height, int directionX, int directionY, int speed){
@@ -10,5 +12,11 @@ public class Beam extends Projectile{
         this.directionX = directionX;
         this.directionY = directionY;
         this.speed = speed;
+    }
+
+    public void render(Graphics2D graphics) {
+        //Draw Beam
+        graphics.setColor(Color.GREEN);
+        graphics.fillOval(this.x, this.y, this.width, this.height);
     }
 }
