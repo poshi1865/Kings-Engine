@@ -41,9 +41,9 @@ public class Game extends JPanel {
         requestFocusInWindow();
         addKeyListener(key);
 
-        pad1 = new Paddle(200, 10);
-        pad2 = new Paddle(800, 10);
-        beam = new Beam(pad1.x + 10, pad1.y + 10, 20, 20, 1, 1, 5);
+        pad1 = new Paddle(100, 10);
+        pad2 = new Paddle(WIDTH - 100, 10);
+        beam = new Beam(pad1.x + 10, pad1.y + 10, 20, 20, 1, 1, 2);
 
     }
 
@@ -79,7 +79,7 @@ public class Game extends JPanel {
     public void run() {
         long lastTime = System.nanoTime();
         long timer = System.currentTimeMillis();
-        final double ns = 1000000000.0 / 60.0;
+        final double ns = 1000000000.0 / 120.0;
         double delta = 0;
         int frames = 0;
         int updates = 0;
@@ -109,43 +109,45 @@ public class Game extends JPanel {
         /*beam collisions*/
 
         //Collision with paddles
-        if (beam.x == pad2.x - beam.width && beam.directionX == 1) {
-            if (beam.y > pad2.y && beam.y < pad2.y + pad2.height) {
-                beam.directionX = -1;
-            }
-        }
-        else if (beam.x == pad1.x + beam.width && beam.directionX == -1) {
+        if (beam.x < pad1.x + beam.width && beam.directionX == -1) {
             if (beam.y > pad1.y && beam.y < pad1.y + pad1.height) {
                 beam.directionX = 1;
             }
         }
+        else if (beam.x > pad2.x - beam.width && beam.directionX == 1) {
+            if (beam.y > pad2.y && beam.y < pad2.y + pad2.height) {
+                beam.directionX = -1;
+            }
+        }
 
         //Collision with walls
-        if (beam.x == WIDTH) {
+        if (beam.x > WIDTH) {
             beam.directionX = -1;
         }
-        if (beam.x == 0) {
+        if (beam.x < 0) {
             beam.directionX = 1;
         }
-        if (beam.y == 0) {
+        if (beam.y < 0) {
             beam.directionY = 1;
         }
-        if (beam.y == HEIGHT) {
+        if (beam.y > HEIGHT) {
             beam.directionY = -1;
         }
 
-        if(key.down) {
-            pad1.y += pad1.speed;
-        }
-        if(key.up) {
+        //Paddle 1
+        if(key.w) {
             pad1.y -= pad1.speed;
         }
-        //if(key.right) {
-        //    pad1.x += pad1.speed;
-        //}
-        //if(key.left) {
-        //    pad1.x -= pad1.speed;
-        //}
+        if(key.s) {
+            pad1.y += pad1.speed;
+        }
+        //Paddle 2
+        if(key.down) {
+            pad2.y += pad2.speed;
+        }
+        if(key.up) {
+            pad2.y -= pad2.speed;
+        }
         key.update();
 
         beam.x = beam.x + beam.directionX * beam.speed;

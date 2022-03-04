@@ -5,7 +5,7 @@ import java.awt.Color;
 public class Paddle {
     public int x;
     public int y;
-    public int speed = 5;
+    public int speed = 6;
     public final int width = 10;
     public final int height = 100;
 
