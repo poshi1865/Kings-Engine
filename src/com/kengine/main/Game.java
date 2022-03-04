@@ -22,15 +22,6 @@ public class Game extends JPanel {
 
     private Keyboard key;
 
-    //Key Bindings
-    private static final String UP = "Up";
-    private Action up = new AbstractAction(UP) {
-        @Override
-        public void actionPerformed(ActionEvent actionEvent) {
-            System.out.println(UP);
-        }
-    };
-
     public Game(String title, int WIDTH, int HEIGHT) {
         this.WIDTH = WIDTH;
         this.HEIGHT = HEIGHT;
@@ -54,11 +45,6 @@ public class Game extends JPanel {
         pad2 = new Paddle(800, 10);
         beam = new Beam(pad1.x + 10, pad1.y + 10, 20, 20, 1, 1, 5);
 
-    }
-
-    private void initKeymaps() {
-        this.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), UP);
-        this.getActionMap().put(UP, up);
     }
 
     /*
