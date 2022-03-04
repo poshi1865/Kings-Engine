@@ -13,8 +13,5 @@ public class Projectile {
     public int chargeTime;
 
     public int speed;
-
-    public int damage;
-
 }
 
