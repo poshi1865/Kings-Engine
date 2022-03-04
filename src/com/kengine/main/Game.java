@@ -41,8 +41,8 @@ public class Game extends JPanel {
         requestFocusInWindow();
         addKeyListener(key);
 
-        pad1 = new Paddle(200, 10);
-        pad2 = new Paddle(800, 10);
+        pad1 = new Paddle(150, 10);
+        pad2 = new Paddle(900, 10);
         beam = new Beam(pad1.x + 10, pad1.y + 10, 20, 20, 1, 1, 5);
 
     }
@@ -61,6 +61,12 @@ public class Game extends JPanel {
         graphics.setColor(Color.white);
         graphics.fillRect(0, 0, WIDTH, HEIGHT);
 
+        //Draw Player1 Line
+        graphics.setColor(Color.RED);
+        graphics.fillRect(pad1.x, 0, 4, HEIGHT);
+        //Draw Player2 Line
+        graphics.setColor(Color.RED);
+        graphics.fillRect(pad2.x, 0, 4, HEIGHT);
 
         //Draw Paddle 1
         graphics.setColor(Color.BLACK);
@@ -110,12 +116,12 @@ public class Game extends JPanel {
 
         //Collision with paddles
         if (beam.x == pad2.x - beam.width && beam.directionX == 1) {
-            if (beam.y > pad2.y && beam.y < pad2.y + pad2.height) {
+            if (beam.y >= pad2.y && beam.y <= pad2.y + pad2.height) {
                 beam.directionX = -1;
             }
         }
         else if (beam.x == pad1.x + beam.width && beam.directionX == -1) {
-            if (beam.y > pad1.y && beam.y < pad1.y + pad1.height) {
+            if (beam.y >= pad1.y && beam.y <= pad1.y + pad1.height) {
                 beam.directionX = 1;
             }
         }
@@ -134,11 +140,20 @@ public class Game extends JPanel {
             beam.directionY = -1;
         }
 
-        if(key.down) {
+        //player 1 movement
+        if(key.s) {
             pad1.y += pad1.speed;
         }
-        if(key.up) {
+        if(key.w) {
             pad1.y -= pad1.speed;
+        }
+
+        //player 2 movement
+        if(key.down) {
+            pad2.y += pad2.speed;
+        }
+        if(key.up) {
+            pad2.y -= pad2.speed;
         }
         //if(key.right) {
         //    pad1.x += pad1.speed;
