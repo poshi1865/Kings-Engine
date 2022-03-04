@@ -7,7 +7,8 @@ public class Projectile {
     public int width;
     public int height;
 
-    public int direction;
+    public int directionX;
+    public int directionY;
 
     public int chargeTime;
 
