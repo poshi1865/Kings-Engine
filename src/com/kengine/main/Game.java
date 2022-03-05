@@ -7,6 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 
 public class Game extends JPanel {
 
@@ -18,7 +19,8 @@ public class Game extends JPanel {
 
     private Paddle pad1;
     private Paddle pad2;
-    private Beam beam;
+    private ArrayList<Beam> beam;
+    private int beamCount=0;
 
     private Keyboard key;
 
@@ -41,9 +43,13 @@ public class Game extends JPanel {
         requestFocusInWindow();
         addKeyListener(key);
 
+        beam = new ArrayList<Beam>();
         pad1 = new Paddle(150, 10);
         pad2 = new Paddle(900, 10);
-        beam = new Beam(pad1.x + 10, pad1.y + 10, 20, 20, 1, 1, 5);
+        for(int i=0; i<beamCount;i++);
+        {
+
+        }
 
     }
 
@@ -65,8 +71,9 @@ public class Game extends JPanel {
         pad2.render(graphics);
 
         //Beam rendering stuff
-        beam.render(graphics);
-
+        for(int i=0; i<beamCount; i++) {
+            beam.get(0).render(graphics);
+        }
         graphics.dispose();
     }
 
@@ -102,6 +109,8 @@ public class Game extends JPanel {
 
         /*beam collisions*/
 
+
+
         //Collision with paddles
         if (beam.x == pad2.x - beam.width && beam.directionX == 1) {
             if (beam.y >= pad2.y && beam.y <= pad2.y + pad2.height) {
@@ -135,6 +144,11 @@ public class Game extends JPanel {
         if(key.w) {
             pad1.y -= pad1.speed;
         }
+        if(key.q){
+            beam.add(new Beam(pad1.x + 10, pad1.y + 10, 20, 20, 1, 1, 5));
+            beam.x = pad1.x;
+            beam.y = pad1.y + pad1.height/2;
+        }
 
         //player 2 movement
         if(key.down) {
@@ -142,6 +156,10 @@ public class Game extends JPanel {
         }
         if(key.up) {
             pad2.y -= pad2.speed;
+        }
+        if(key.pgUp){
+            beam.x = pad1.x;
+            beam.y = pad1.y + pad1.height/2;
         }
         //if(key.right) {
         //    pad1.x += pad1.speed;
@@ -151,8 +169,8 @@ public class Game extends JPanel {
         //}
         key.update();
 
-        beam.x = beam.x + beam.directionX * beam.speed;
-        beam.y = beam.y + beam.directionY * beam.speed;
+        //beam.x = beam.x + beam.directionX * beam.speed;
+        //beam.y = beam.y + beam.directionY * beam.speed;
     }
 
     private void render() {
