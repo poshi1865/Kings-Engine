@@ -24,6 +24,9 @@ public class Game extends JPanel {
 
     private Keyboard key;
 
+    long currentTime;
+    long lastBeamFiredTime;
+
     public Game(String title, int WIDTH, int HEIGHT) {
         this.WIDTH = WIDTH;
         this.HEIGHT = HEIGHT;
@@ -71,8 +74,8 @@ public class Game extends JPanel {
         pad2.render(graphics);
 
         //Beam rendering stuff
-        for(int i=0; i<beamCount; i++) {
-            beam.get(0).render(graphics);
+        for(int i=0; i< beam.size(); i++) {
+            beam.get(i).render(graphics);
         }
         graphics.dispose();
     }
@@ -106,10 +109,11 @@ public class Game extends JPanel {
     }
 
     private void update() {
-
+        currentTime = System.currentTimeMillis();
         /*beam collisions*/
 
 
+        /*
 
         //Collision with paddles
         if (beam.x == pad2.x - beam.width && beam.directionX == 1) {
@@ -123,8 +127,10 @@ public class Game extends JPanel {
             }
         }
 
+
+
         //Collision with walls
-        if (beam.x == WIDTH) {
+        if (beam.get().x == WIDTH) {
             beam.directionX = -1;
         }
         if (beam.x == 0) {
@@ -136,6 +142,7 @@ public class Game extends JPanel {
         if (beam.y == HEIGHT) {
             beam.directionY = -1;
         }
+        */
 
         //player 1 movement
         if(key.s) {
@@ -145,9 +152,12 @@ public class Game extends JPanel {
             pad1.y -= pad1.speed;
         }
         if(key.q){
-            beam.add(new Beam(pad1.x + 10, pad1.y + 10, 20, 20, 1, 1, 5));
-            beam.x = pad1.x;
-            beam.y = pad1.y + pad1.height/2;
+            if (currentTime - lastBeamFiredTime > 200) {
+                lastBeamFiredTime = System.currentTimeMillis();
+                Beam tempBeam=new Beam(pad1.x + 10, pad1.y + pad1.height/2, 15, 8, 1, 0, 5);
+                beam.add(tempBeam);
+            }
+
         }
 
         //player 2 movement
@@ -157,10 +167,13 @@ public class Game extends JPanel {
         if(key.up) {
             pad2.y -= pad2.speed;
         }
+        /*
         if(key.pgUp){
             beam.x = pad1.x;
             beam.y = pad1.y + pad1.height/2;
         }
+
+        */
         //if(key.right) {
         //    pad1.x += pad1.speed;
         //}
@@ -168,6 +181,10 @@ public class Game extends JPanel {
         //    pad1.x -= pad1.speed;
         //}
         key.update();
+
+        for(int i=0; i < beam.size(); i++){
+            beam.get(i).update();
+        }
 
         //beam.x = beam.x + beam.directionX * beam.speed;
         //beam.y = beam.y + beam.directionY * beam.speed;

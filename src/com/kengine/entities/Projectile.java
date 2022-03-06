@@ -10,8 +10,6 @@ public class Projectile {
     public int directionX;
     public int directionY;
 
-    public int chargeTime;
-
     public int speed;
 }
 
