@@ -4,7 +4,7 @@ import java.awt.*;
 
 public class Beam extends Projectile{
 
-    public Beam(int x, int y, int width, int height, int directionX, int directionY, int speed){
+    public Beam(int x, int y, int width, int height, int directionX, int directionY, int speed, Color color){
         this.x = x;
         this.y = y;
         this.width = width;
@@ -12,11 +12,12 @@ public class Beam extends Projectile{
         this.directionX = directionX;
         this.directionY = directionY;
         this.speed = speed;
+        this.color = color;
     }
 
     public void render(Graphics2D graphics) {
         //Draw Beam
-        graphics.setColor(Color.GREEN);
+        graphics.setColor(color);
         graphics.fillOval(this.x, this.y, this.width, this.height);
     }
 
@@ -26,8 +27,15 @@ public class Beam extends Projectile{
     }
 
     public boolean intersects(int x, int y, int width, int height) {
-        if (this.x >= x && this.y >= y && this.y <= y + height) {
-            return true;
+        if (this.directionX == 1) {
+            if (this.x >= x && this.y >= y && this.y <= y + height) {
+                return true;
+            }
+        }
+        else if (this.directionX == -1) {
+            if (this.x <= x && this.y >= y && this.y <= y + height) {
+                return true;
+            }
         }
         return false;
     }

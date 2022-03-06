@@ -4,8 +4,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class Keyboard implements KeyListener {
-    public boolean[] keys = new boolean[120];
-    public boolean up, down, left, right, w, a, s, d, q, e, pgUp, pgDown;
+    public boolean[] keys = new boolean[180];
+    public boolean up, down, left, right, w, a, s, d, q, e, k, l;
 
     public void update() {
 
@@ -22,8 +22,8 @@ public class Keyboard implements KeyListener {
         down = keys[KeyEvent.VK_DOWN];
         left = keys[KeyEvent.VK_LEFT];
         right = keys[KeyEvent.VK_RIGHT];
-        pgUp = keys[KeyEvent.VK_PAGE_UP];
-        pgDown = keys[KeyEvent.VK_PAGE_DOWN];
+        k = keys[KeyEvent.VK_K];
+        l = keys[KeyEvent.VK_L];
 
     }
 

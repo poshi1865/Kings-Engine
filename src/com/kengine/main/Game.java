@@ -17,12 +17,14 @@ public class Game extends JPanel {
 
     private Paddle pad1;
     private Paddle pad2;
-    private ArrayList<Beam> beamArray;
+    private ArrayList<Beam> pad1BeamArray;
+    private ArrayList<Beam> pad2BeamArray;
 
     private Keyboard key;
 
     long currentTime;
-    long lastBeamFiredTime = 0;
+    long lastBeam1FiredTime = 0;
+    long lastBeam2FiredTime = 0;
 
     public Game(String title, int WIDTH, int HEIGHT) {
         this.WIDTH = WIDTH;
@@ -43,9 +45,11 @@ public class Game extends JPanel {
         requestFocusInWindow();
         addKeyListener(key);
 
-        beamArray = new ArrayList<Beam>();
-        pad1 = new Paddle(150, 10);
-        pad2 = new Paddle(900, 10);
+        pad1BeamArray = new ArrayList<Beam>();
+        pad2BeamArray = new ArrayList<Beam>();
+
+        pad1 = new Paddle(150, 10, Color.green);
+        pad2 = new Paddle(900, 10, Color.red);
 
     }
 
@@ -67,8 +71,11 @@ public class Game extends JPanel {
         pad2.render(graphics);
 
         //Beam rendering stuff
-        for(int i = 0; i< beamArray.size(); i++) {
-            beamArray.get(i).render(graphics);
+        for(int i = 0; i< pad1BeamArray.size(); i++) {
+            pad1BeamArray.get(i).render(graphics);
+        }
+        for(int i = 0; i< pad2BeamArray.size(); i++) {
+            pad2BeamArray.get(i).render(graphics);
         }
         graphics.dispose();
     }
@@ -116,10 +123,10 @@ public class Game extends JPanel {
             }
         }
         if(key.q){
-            if (currentTime - lastBeamFiredTime > 200) {
-                lastBeamFiredTime = System.currentTimeMillis();
-                Beam tempBeam=new Beam(pad1.x + 10, pad1.y + pad1.height/2, 15, 8, 1, 0, 5);
-                beamArray.add(tempBeam);
+            if (currentTime - lastBeam1FiredTime > 500) {
+                lastBeam1FiredTime = System.currentTimeMillis();
+                Beam tempBeam=new Beam(pad1.x + 10, pad1.y + pad1.height/2, 15, 8, 1, 0, 10, Color.green);
+                pad1BeamArray.add(tempBeam);
             }
         }
 
@@ -134,25 +141,45 @@ public class Game extends JPanel {
                 pad2.y -= pad2.speed;
             }
         }
+        if(key.k){
+            if (currentTime - lastBeam2FiredTime > 500) {
+                lastBeam2FiredTime = System.currentTimeMillis();
+                Beam tempBeam=new Beam(pad2.x - 10, pad2.y + pad2.height/2, 15, 8, -1, 0, 10, Color.red);
+                pad2BeamArray.add(tempBeam);
+            }
+        }
         key.update();
 
         //beams location updation
-        for (int i = 0; i < beamArray.size(); i++){
-            beamArray.get(i).update();
+        for (int i = 0; i < pad1BeamArray.size(); i++){
+            pad1BeamArray.get(i).update();
+        }
+        for (int i = 0; i < pad2BeamArray.size(); i++){
+            pad2BeamArray.get(i).update();
         }
 
         /* CHECKING FOR COLLISIONS */
 
         //beam collision for paddle 1
-        for (int i = 0; i < beamArray.size(); i++) {
-            if (beamArray.get(i).intersects(pad2.x, pad2.y, pad2.width, pad2.height)) {
-                beamArray.remove(i);
-                System.out.println("Beam Array Size: " + beamArray.size());
+        for (int i = 0; i < pad1BeamArray.size(); i++) {
+            if (pad1BeamArray.get(i).intersects(pad2.x, pad2.y, pad2.width, pad2.height)) {
+                pad1BeamArray.remove(i);
             }
-            else if (beamArray.get(i).x > WIDTH || beamArray.get(i).y > HEIGHT
-                || beamArray.get(i).x < 0 || beamArray.get(i).y < 0) {
-                beamArray.remove(i);
-                System.out.println("Beam Array Size: " + beamArray.size());
+            else if (pad1BeamArray.get(i).x > WIDTH || pad1BeamArray.get(i).y > HEIGHT
+                || pad1BeamArray.get(i).x < 0 || pad1BeamArray.get(i).y < 0) {
+                pad1BeamArray.remove(i);
+            }
+        }
+        //Beam collision for paddle 2
+        for (int i = 0; i < pad2BeamArray.size(); i++) {
+            if (pad2BeamArray.get(i).intersects(pad1.x, pad1.y, pad1.width, pad1.height)) {
+                pad2BeamArray.remove(i);
+                System.out.println("Beam Array Size: " + pad2BeamArray.size());
+            }
+            else if (pad2BeamArray.get(i).x > WIDTH || pad2BeamArray.get(i).y > HEIGHT
+                    || pad2BeamArray.get(i).x < 0 || pad2BeamArray.get(i).y < 0) {
+                pad2BeamArray.remove(i);
+                System.out.println("Beam Array Size: " + pad2BeamArray.size());
             }
         }
 

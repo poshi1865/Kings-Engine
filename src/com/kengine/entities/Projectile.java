@@ -1,5 +1,7 @@
 package com.kengine.entities;
 
+import java.awt.*;
+
 public class Projectile {
     //shape
     public int x;
@@ -9,6 +11,8 @@ public class Projectile {
 
     public int directionX;
     public int directionY;
+
+    public Color color;
 
     public int speed;
 }
