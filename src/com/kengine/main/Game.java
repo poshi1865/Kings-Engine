@@ -5,8 +5,7 @@ import com.kengine.entities.Paddle;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 
 public class Game extends JPanel {
 
@@ -18,9 +17,12 @@ public class Game extends JPanel {
 
     private Paddle pad1;
     private Paddle pad2;
-    private Beam beam;
+    private ArrayList<Beam> beamArray;
 
     private Keyboard key;
+
+    long currentTime;
+    long lastBeamFiredTime = 0;
 
     public Game(String title, int WIDTH, int HEIGHT) {
         this.WIDTH = WIDTH;
@@ -41,9 +43,9 @@ public class Game extends JPanel {
         requestFocusInWindow();
         addKeyListener(key);
 
+        beamArray = new ArrayList<Beam>();
         pad1 = new Paddle(150, 10);
         pad2 = new Paddle(900, 10);
-        beam = new Beam(pad1.x + 10, pad1.y + 10, 20, 20, 1, 1, 5);
 
     }
 
@@ -65,8 +67,9 @@ public class Game extends JPanel {
         pad2.render(graphics);
 
         //Beam rendering stuff
-        beam.render(graphics);
-
+        for(int i = 0; i< beamArray.size(); i++) {
+            beamArray.get(i).render(graphics);
+        }
         graphics.dispose();
     }
 
@@ -99,60 +102,62 @@ public class Game extends JPanel {
     }
 
     private void update() {
+        currentTime = System.currentTimeMillis();
 
-        /*beam collisions*/
-
-        //Collision with paddles
-        if (beam.x == pad2.x - beam.width && beam.directionX == 1) {
-            if (beam.y >= pad2.y && beam.y <= pad2.y + pad2.height) {
-                beam.directionX = -1;
-            }
-        }
-        else if (beam.x == pad1.x + beam.width && beam.directionX == -1) {
-            if (beam.y >= pad1.y && beam.y <= pad1.y + pad1.height) {
-                beam.directionX = 1;
-            }
-        }
-
-        //Collision with walls
-        if (beam.x == WIDTH) {
-            beam.directionX = -1;
-        }
-        if (beam.x == 0) {
-            beam.directionX = 1;
-        }
-        if (beam.y == 0) {
-            beam.directionY = 1;
-        }
-        if (beam.y == HEIGHT) {
-            beam.directionY = -1;
-        }
-
-        //player 1 movement
+        //player 1 movement and firing
         if(key.s) {
-            pad1.y += pad1.speed;
+            if (pad1.y != HEIGHT - pad1.height) {
+                pad1.y += pad1.speed;
+            }
         }
         if(key.w) {
-            pad1.y -= pad1.speed;
+            if (pad1.y != 0) {
+                pad1.y -= pad1.speed;
+            }
+        }
+        if(key.q){
+            if (currentTime - lastBeamFiredTime > 200) {
+                lastBeamFiredTime = System.currentTimeMillis();
+                Beam tempBeam=new Beam(pad1.x + 10, pad1.y + pad1.height/2, 15, 8, 1, 0, 5);
+                beamArray.add(tempBeam);
+            }
         }
 
-        //player 2 movement
+        //player 2 movement and firing
         if(key.down) {
-            pad2.y += pad2.speed;
+            if (pad2.y != HEIGHT - pad2.height) {
+                pad2.y += pad2.speed;
+            }
         }
         if(key.up) {
-            pad2.y -= pad2.speed;
+            if (pad2.y != 0) {
+                pad2.y -= pad2.speed;
+            }
         }
-        //if(key.right) {
-        //    pad1.x += pad1.speed;
-        //}
-        //if(key.left) {
-        //    pad1.x -= pad1.speed;
-        //}
         key.update();
 
-        beam.x = beam.x + beam.directionX * beam.speed;
-        beam.y = beam.y + beam.directionY * beam.speed;
+        //beams location updation
+        for (int i = 0; i < beamArray.size(); i++){
+            beamArray.get(i).update();
+        }
+
+        /* CHECKING FOR COLLISIONS */
+
+        //beam collision for paddle 1
+        for (int i = 0; i < beamArray.size(); i++) {
+            if (beamArray.get(i).intersects(pad2.x, pad2.y, pad2.width, pad2.height)) {
+                beamArray.remove(i);
+                System.out.println("Beam Array Size: " + beamArray.size());
+            }
+            else if (beamArray.get(i).x > WIDTH || beamArray.get(i).y > HEIGHT
+                || beamArray.get(i).x < 0 || beamArray.get(i).y < 0) {
+                beamArray.remove(i);
+                System.out.println("Beam Array Size: " + beamArray.size());
+            }
+        }
+
+
+
     }
 
     private void render() {

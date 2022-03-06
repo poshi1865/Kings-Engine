@@ -19,4 +19,16 @@ public class Beam extends Projectile{
         graphics.setColor(Color.GREEN);
         graphics.fillOval(this.x, this.y, this.width, this.height);
     }
+
+    public void update(){
+        this.x += this.speed * this.directionX;
+        this.y += this.speed * this.directionY;
+    }
+
+    public boolean intersects(int x, int y, int width, int height) {
+        if (this.x >= x && this.y >= y && this.y <= y + height) {
+            return true;
+        }
+        return false;
+    }
 }
