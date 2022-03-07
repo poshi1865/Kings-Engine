@@ -66,6 +66,13 @@ public class Game extends JPanel {
         //clear screen
         graphics.setColor(Color.white);
         graphics.fillRect(0, 0, WIDTH, HEIGHT);
+        //Screen Message: Game Over
+
+        if (pad1.healthBar == 0 || pad2.healthBar == 0){
+            graphics.setColor(Color.BLACK);
+            graphics.drawString("Game Over", pad1.x + (pad2.x - pad1.x)/2, HEIGHT/2);
+            running = false;
+        }
 
         pad1.render(graphics);
         pad2.render(graphics);
@@ -164,6 +171,7 @@ public class Game extends JPanel {
         for (int i = 0; i < pad1BeamArray.size(); i++) {
             if (pad1BeamArray.get(i).intersects(pad2.x, pad2.y, pad2.width, pad2.height)) {
                 pad1BeamArray.remove(i);
+                pad2.healthBar -= 20;
             }
             else if (pad1BeamArray.get(i).x > WIDTH || pad1BeamArray.get(i).y > HEIGHT
                 || pad1BeamArray.get(i).x < 0 || pad1BeamArray.get(i).y < 0) {
@@ -174,6 +182,7 @@ public class Game extends JPanel {
         for (int i = 0; i < pad2BeamArray.size(); i++) {
             if (pad2BeamArray.get(i).intersects(pad1.x, pad1.y, pad1.width, pad1.height)) {
                 pad2BeamArray.remove(i);
+                pad1.healthBar -= 20;
                 System.out.println("Beam Array Size: " + pad2BeamArray.size());
             }
             else if (pad2BeamArray.get(i).x > WIDTH || pad2BeamArray.get(i).y > HEIGHT
