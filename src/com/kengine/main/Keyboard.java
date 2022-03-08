@@ -5,7 +5,7 @@ import java.awt.event.KeyListener;
 
 public class Keyboard implements KeyListener {
     public boolean[] keys = new boolean[180];
-    public boolean up, down, left, right, w, a, s, d, q, e, k, l;
+    public boolean i, e, w, a, s, d, q, o, l, k, semiColon;
 
     public void update() {
 
@@ -18,12 +18,11 @@ public class Keyboard implements KeyListener {
         e = keys[KeyEvent.VK_E];
 
         //Player2
-        up = keys[KeyEvent.VK_UP];
-        down = keys[KeyEvent.VK_DOWN];
-        left = keys[KeyEvent.VK_LEFT];
-        right = keys[KeyEvent.VK_RIGHT];
-        k = keys[KeyEvent.VK_K];
+        o = keys[KeyEvent.VK_O];
         l = keys[KeyEvent.VK_L];
+        k = keys[KeyEvent.VK_K];
+        semiColon = keys[KeyEvent.VK_SEMICOLON];
+        i = keys[KeyEvent.VK_I];
 
     }
 

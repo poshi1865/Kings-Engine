@@ -48,8 +48,8 @@ public class Game extends JPanel {
         pad1BeamArray = new ArrayList<Beam>();
         pad2BeamArray = new ArrayList<Beam>();
 
-        pad1 = new Paddle(150, 10, Color.green);
-        pad2 = new Paddle(900, 10, Color.red);
+        pad1 = new Paddle(50, 10, Color.green);
+        pad2 = new Paddle(1000, 10, Color.red);
 
     }
 
@@ -132,26 +132,26 @@ public class Game extends JPanel {
         if(key.q){
             if (currentTime - lastBeam1FiredTime > 500) {
                 lastBeam1FiredTime = System.currentTimeMillis();
-                Beam tempBeam=new Beam(pad1.x + 10, pad1.y + pad1.height/2, 15, 8, 1, 0, 10, Color.green);
+                Beam tempBeam=new Beam(pad1.x + 10, pad1.y + pad1.height/2, 15, 8, 1, 0, 20, Color.green);
                 pad1BeamArray.add(tempBeam);
             }
         }
 
         //player 2 movement and firing
-        if(key.down) {
+        if(key.l) {
             if (pad2.y != HEIGHT - pad2.height) {
                 pad2.y += pad2.speed;
             }
         }
-        if(key.up) {
+        if(key.o) {
             if (pad2.y != 0) {
                 pad2.y -= pad2.speed;
             }
         }
-        if(key.k){
+        if(key.i){
             if (currentTime - lastBeam2FiredTime > 500) {
                 lastBeam2FiredTime = System.currentTimeMillis();
-                Beam tempBeam=new Beam(pad2.x - 10, pad2.y + pad2.height/2, 15, 8, -1, 0, 10, Color.red);
+                Beam tempBeam=new Beam(pad2.x - 10, pad2.y + pad2.height/2, 15, 8, -1, 0, 20, Color.red);
                 pad2BeamArray.add(tempBeam);
             }
         }
