@@ -154,11 +154,14 @@ public class Game extends JPanel {
         }
         else {
             //bot movement
-            if (direction == 1 && pad2.y+pad2.height >= HEIGHT);
+            if (direction == 1 && pad2.y+pad2.height >= HEIGHT)
             {
+                //System.out.println(pad2.y+" "+pad2.height+" "+HEIGHT);
+                //System.out.println("Up");
                 direction = -1;
             }
             if (direction == -1 && pad2.y <= 0){
+                //System.out.println("down");
                 direction = 1;
             }
             pad2.y+=direction*5;
