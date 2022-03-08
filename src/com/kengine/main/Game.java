@@ -12,13 +12,14 @@ public class Game extends JPanel {
     public static int WIDTH;
     public static int HEIGHT;
     private String title;
-
+    private boolean enableBot = true;
     private boolean running = true;
 
     private Paddle pad1;
     private Paddle pad2;
     private ArrayList<Beam> pad1BeamArray;
     private ArrayList<Beam> pad2BeamArray;
+    public int direction = 1;
 
     private Keyboard key;
 
@@ -111,44 +112,58 @@ public class Game extends JPanel {
     private void update() {
         currentTime = System.currentTimeMillis();
 
-        //player 1 movement and firing
-        if(key.s) {
-            if (pad1.y != HEIGHT - pad1.height) {
-                pad1.y += pad1.speed;
+        if (enableBot == false){
+            //player 1 movement and firing
+            if(key.s) {
+                if (pad1.y != HEIGHT - pad1.height) {
+                    pad1.y += pad1.speed;
+                }
             }
+            if(key.w) {
+                if (pad1.y != 0) {
+                    pad1.y -= pad1.speed;
+                }
+            }
+            if(key.q){
+                if (currentTime - lastBeam1FiredTime > 500) {
+                    lastBeam1FiredTime = System.currentTimeMillis();
+                    Beam tempBeam=new Beam(pad1.x + 10, pad1.y + pad1.height/2, 15, 8, 1, 0, 10, Color.green);
+                    pad1BeamArray.add(tempBeam);
+                }
+            }
+
+            //player 2 movement and firing
+            if(key.down) {
+                if (pad2.y != HEIGHT - pad2.height) {
+                    pad2.y += pad2.speed;
+                }
+            }
+            if(key.up) {
+                if (pad2.y != 0) {
+                    pad2.y -= pad2.speed;
+                }
+            }
+            if(key.k){
+                if (currentTime - lastBeam2FiredTime > 500) {
+                    lastBeam2FiredTime = System.currentTimeMillis();
+                    Beam tempBeam=new Beam(pad2.x - 10, pad2.y + pad2.height/2, 15, 8, -1, 0, 10, Color.red);
+                    pad2BeamArray.add(tempBeam);
+                }
+            }
+            key.update();
         }
-        if(key.w) {
-            if (pad1.y != 0) {
-                pad1.y -= pad1.speed;
+        else {
+            //bot movement
+            if (direction == 1 && pad2.y+pad2.height >= HEIGHT);
+            {
+                direction = -1;
             }
-        }
-        if(key.q){
-            if (currentTime - lastBeam1FiredTime > 500) {
-                lastBeam1FiredTime = System.currentTimeMillis();
-                Beam tempBeam=new Beam(pad1.x + 10, pad1.y + pad1.height/2, 15, 8, 1, 0, 10, Color.green);
-                pad1BeamArray.add(tempBeam);
+            if (direction == -1 && pad2.y <= 0){
+                direction = 1;
             }
+            pad2.y+=direction*5;
         }
 
-        //player 2 movement and firing
-        if(key.down) {
-            if (pad2.y != HEIGHT - pad2.height) {
-                pad2.y += pad2.speed;
-            }
-        }
-        if(key.up) {
-            if (pad2.y != 0) {
-                pad2.y -= pad2.speed;
-            }
-        }
-        if(key.k){
-            if (currentTime - lastBeam2FiredTime > 500) {
-                lastBeam2FiredTime = System.currentTimeMillis();
-                Beam tempBeam=new Beam(pad2.x - 10, pad2.y + pad2.height/2, 15, 8, -1, 0, 10, Color.red);
-                pad2BeamArray.add(tempBeam);
-            }
-        }
-        key.update();
 
         //beams location updation
         for (int i = 0; i < pad1BeamArray.size(); i++){
