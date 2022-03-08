@@ -12,7 +12,7 @@ public class Game extends JPanel {
     public static int WIDTH;
     public static int HEIGHT;
     private String title;
-    private boolean enableBot = true;
+    private boolean enableBot = false;
     private boolean running = true;
 
     private Paddle pad1;
