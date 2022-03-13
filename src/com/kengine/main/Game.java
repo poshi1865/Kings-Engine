@@ -48,8 +48,8 @@ public class Game extends JPanel {
         pad1BeamArray = new ArrayList<Beam>();
         pad2BeamArray = new ArrayList<Beam>();
 
-        pad1 = new Paddle(150, 10, Color.green);
-        pad2 = new Paddle(900, 10, Color.red);
+        pad1 = new Paddle(50, 10, Color.green);
+        pad2 = new Paddle(1000, 10, Color.red);
 
     }
 
@@ -66,6 +66,13 @@ public class Game extends JPanel {
         //clear screen
         graphics.setColor(Color.white);
         graphics.fillRect(0, 0, WIDTH, HEIGHT);
+        //Screen Message: Game Over
+
+        if (pad1.healthBar == 0 || pad2.healthBar == 0){
+            graphics.setColor(Color.BLACK);
+            graphics.drawString("Game Over", pad1.x + (pad2.x - pad1.x)/2, HEIGHT/2);
+            running = false;
+        }
 
         pad1.render(graphics);
         pad2.render(graphics);
@@ -125,26 +132,26 @@ public class Game extends JPanel {
         if(key.q){
             if (currentTime - lastBeam1FiredTime > 500) {
                 lastBeam1FiredTime = System.currentTimeMillis();
-                Beam tempBeam=new Beam(pad1.x + 10, pad1.y + pad1.height/2, 15, 8, 1, 0, 10, Color.green);
+                Beam tempBeam=new Beam(pad1.x + 10, pad1.y + pad1.height/2, 15, 8, 1, 0, 20, Color.green);
                 pad1BeamArray.add(tempBeam);
             }
         }
 
         //player 2 movement and firing
-        if(key.down) {
+        if(key.l) {
             if (pad2.y != HEIGHT - pad2.height) {
                 pad2.y += pad2.speed;
             }
         }
-        if(key.up) {
+        if(key.o) {
             if (pad2.y != 0) {
                 pad2.y -= pad2.speed;
             }
         }
-        if(key.k){
+        if(key.i){
             if (currentTime - lastBeam2FiredTime > 500) {
                 lastBeam2FiredTime = System.currentTimeMillis();
-                Beam tempBeam=new Beam(pad2.x - 10, pad2.y + pad2.height/2, 15, 8, -1, 0, 10, Color.red);
+                Beam tempBeam=new Beam(pad2.x - 10, pad2.y + pad2.height/2, 15, 8, -1, 0, 20, Color.red);
                 pad2BeamArray.add(tempBeam);
             }
         }
@@ -164,6 +171,7 @@ public class Game extends JPanel {
         for (int i = 0; i < pad1BeamArray.size(); i++) {
             if (pad1BeamArray.get(i).intersects(pad2.x, pad2.y, pad2.width, pad2.height)) {
                 pad1BeamArray.remove(i);
+                pad2.healthBar -= 20;
             }
             else if (pad1BeamArray.get(i).x > WIDTH || pad1BeamArray.get(i).y > HEIGHT
                 || pad1BeamArray.get(i).x < 0 || pad1BeamArray.get(i).y < 0) {
@@ -174,6 +182,7 @@ public class Game extends JPanel {
         for (int i = 0; i < pad2BeamArray.size(); i++) {
             if (pad2BeamArray.get(i).intersects(pad1.x, pad1.y, pad1.width, pad1.height)) {
                 pad2BeamArray.remove(i);
+                pad1.healthBar -= 20;
                 System.out.println("Beam Array Size: " + pad2BeamArray.size());
             }
             else if (pad2BeamArray.get(i).x > WIDTH || pad2BeamArray.get(i).y > HEIGHT

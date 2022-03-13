@@ -11,6 +11,7 @@ public class Paddle {
     public final int width = 10;
     public final int height = 100;
     public Color color;
+    public int healthBar = 100;
 
     public Paddle(int x, int y, Color color) {
         this.x = x;
@@ -24,5 +25,6 @@ public class Paddle {
         graphics.fillRect(this.x, 0, 2, Game.HEIGHT);
         graphics.setColor(this.color);
         graphics.fillRect(this.x - this.width / 2 + 1, this.y, this.width, this.height);
+        graphics.drawString("" + healthBar, this.x+width, this.y + this.height/2);
     }
 }
